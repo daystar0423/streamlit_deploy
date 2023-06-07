@@ -1,35 +1,18 @@
+import my
+import chart
 import streamlit as st
 import pandas as pd
+import importlib
+importlib.reload(my)
+importlib.reload(chart)
 
-st.set_page_config(
-    page_title='Multipage App'
-)
+with st.expander("step 1 : load data"):
+    file = st.file_uploader("upload osc data from sst", type=('txt', 'csv'))
 
-st.title('Main Page')
-st.sidebar.success('Select a page above')
-
-
-# if 'my_input' not in st.session_state:
-#     st.session_state['my_name'] = ''
-
-# xxx = st.text_input('input a test here : ', st.session_state['my_input'])
-# submit = st.buttion('Submit')
-# if submit:
-#     st.session_state['my_input'] = my_input
-#     st.write('you have entered : ', my_input)
-# with open('list.txt', 'w', encoding='utf8') as f:
-#     f.write(my_input)
-
-my_input = st.text_input('input a test here : ')
-submit = st.button('save')
-if submit:
-    name = my_input
-    with open('list.csv', 'w', encoding='utf8') as f:
-        f.write(name)
-
-
-
-submit = st.button('load')
-if submit:
-    with open('list.csv', 'r', encoding='utf8') as f:
-        st.write(f.read())
+with st.expander("step 2 : default setting"):
+    c1, c2 = st.columns(2)
+    with c1: full_stroke = st.number_input('full stroke [mm]', value = 0.00)
+    with c2: ct_sep_per = st.number_input('contact seperation [%]', value = 0.00)
+    
+with st.expander("step 2 : plot chart"):
+    chart.auto_chart(file, True, full_stroke, ct_sep_per)
